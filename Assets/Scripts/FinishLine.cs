@@ -5,11 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour
 {
-    //If finish line reached you finish level
+    [SerializeField] float levelReloadDelaySeconds = 1; //Delay for level reload
+
+    //Triggered on reaching finish line
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.tag == "Player"){
             Debug.Log("You Finished!");
-            SceneManager.LoadScene("Snow_Boarder");
+            Invoke("ReloadScene", levelReloadDelaySeconds);
         }
+    }
+
+    //Reloads level
+    private void ReloadScene(){
+        SceneManager.LoadScene("Snow_Boarder");
     }
 }
