@@ -6,21 +6,23 @@ using UnityEngine;
 
 //Script for player controls
 public class PlayerController : MonoBehaviour {
+
+    //movement components (rotation and general physics)
     Rigidbody2D rigidbody; //The rigid body on our object
     [SerializeField] float torqueAmount = 1f; //amount of torque applied to character
-    [SerializeField] ParticleSystem snowTrailEffect; //particle system for the snow trail effect
+
+    //surface Effector component
     SurfaceEffector2D groundSurfaceEffector; //reference to level surface effector
-
-
-    //movement
-    private float normalSpeed;//normal speed of surface effector
-    private float boostSpeed;//bosted speed of surface effector for boost
+        private float normalSpeed;//normal speed of surface effector
+        private float boostSpeed;//bosted speed of surface effector for boost
 
     //particle system components
-    private ParticleSystem.EmissionModule snowTrailEmmisionModule; //Emmision module for snowtrail particle emmiter
-    private float normalEmission; //current rate of emmision
-    private float boostedEmission; //doubled rate of emmision for boost
+    [SerializeField] ParticleSystem snowTrailEffect; //particle system for the snow trail effect
+        private ParticleSystem.EmissionModule snowTrailEmmisionModule; //Emmision module for snowtrail particle emmiter
+            private float normalEmission; //current rate of emmision
+            private float boostedEmission; //doubled rate of emmision for boost
 
+    
     
     // Start is called before the first frame update
     private void Start() {
