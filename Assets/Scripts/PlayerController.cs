@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -7,10 +8,19 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     Rigidbody2D rigidbody; //The rigid body on our object
     [SerializeField] float torqueAmount = 1f; //amount of torque applied to character
+    [SerializeField] ParticleSystem snowTrailEffect; //particle system for the snow trail effect
     SurfaceEffector2D groundSurfaceEffector; //reference to level surface effector
-    
+
+
+    //movement
     private float normalSpeed;//normal speed of surface effector
-    private float boostSpeed;//bosted speed of surface effector
+    private float boostSpeed;//bosted speed of surface effector for boost
+
+    //particle system components
+    private ParticleSystem.EmissionModule snowTrailEmmisionModule; //Emmision module for snowtrail particle emmiter
+    private float normalEmission; //current rate of emmision
+    private float boostedEmission; //doubled rate of emmision for boost
+
     
     // Start is called before the first frame update
     private void Start() {
@@ -18,6 +28,11 @@ public class PlayerController : MonoBehaviour {
         groundSurfaceEffector = FindObjectOfType<SurfaceEffector2D>(); //get surface effector of ground
         normalSpeed = groundSurfaceEffector.speed; //set normal speed
         boostSpeed = groundSurfaceEffector.speed * 2; //set boosted speed
+
+        //particle emission
+        snowTrailEmmisionModule = snowTrailEffect.emission;
+        normalEmission = snowTrailEmmisionModule.rateOverTime.constant;
+        boostedEmission = snowTrailEmmisionModule.rateOverTime.constant * 2; 
     }
 
     // Update is called once per frame
@@ -36,13 +51,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    //If we push up, then double speed of surface effector, otherwise normal speed
+    //If we push up, then double speed of surface effector and double particle emmision rate, otherwise normal speed and normal particle emmision
     private void RespondToBoost() {
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W)){
             groundSurfaceEffector.speed = boostSpeed;
+            snowTrailEmmisionModule.rateOverTime = new ParticleSystem.MinMaxCurve(boostedEmission);
         }
         else{
             groundSurfaceEffector.speed = normalSpeed;
+            snowTrailEmmisionModule.rateOverTime = new ParticleSystem.MinMaxCurve(normalEmission);
         }
     }
 }
