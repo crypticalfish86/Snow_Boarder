@@ -686,6 +686,7 @@ MonoBehaviour:
   deathEffect: {fileID: 1490798122}
   head: {fileID: 261634581}
   legs: {fileID: 1596583017}
+  Camera: {fileID: 519420028}
 --- !u!1 &633739897
 GameObject:
   m_ObjectHideFlags: 0
