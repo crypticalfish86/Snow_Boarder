@@ -39,14 +39,16 @@ public class CrashDetector : MonoBehaviour
     
     /*
         Plays the effects on player crash:
-            1.Plays crash SFX
+            1.Disables player controls
             2.sets player velocity to zero
-            3.Stops camera motion
-            4.Triggers snow crash particle effect
+            3.Plays crash SFX
+            4.Stops camera motion
+            5.Triggers snow crash particle effect
     */
     private void PlayCrashEffects(){
+            FindObjectOfType<PlayerController>().DisableControls();//disables player controls
             rigidBody.velocity = Vector3.zero; //stop player object movement
-            rigidBody.Sleep(); //puts rigid body to sleep to prevent object start moving again
+            rigidBody.Sleep(); //puts rigid body to sleep to prevent object starting to move again
             GetComponent<AudioSource>().PlayOneShot(crashSFX);
             Destroy(cinemachineBrain); //stop camera
             deathEffect.Play(); //particle explosion
@@ -58,8 +60,6 @@ public class CrashDetector : MonoBehaviour
             Destroy(legs); //delete player bottom
             Destroy(snowTrail);//delete snowboard particle effect
     }
-
-
 
     //Restarts level if snowboarder hits head
     private void ReloadScene(){
